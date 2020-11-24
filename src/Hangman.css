@@ -56,3 +56,9 @@
   color: #eeeeee;
   box-shadow: 0 6px #9e9e9e;
 }
+
+.Hangman .Hangman-reset {
+  display: block;
+  margin: 20px auto;
+  width: 100px;
+}

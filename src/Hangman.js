@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./Hangman.css";
+import { randomWord } from "./words";
+import AlphaButtons from "./AlphaButtons";
 import img0 from "./0.jpg";
 import img1 from "./1.jpg";
 import img2 from "./2.jpg";
@@ -17,8 +19,9 @@ class Hangman extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { nWrong: 0, guessed: new Set(), answer: "apple" };
+    this.state = { nWrong: 0, guessed: new Set(), answer: randomWord() };
     this.handleGuess = this.handleGuess.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   /** guessedWord: show current-state of word:
@@ -61,15 +64,30 @@ class Hangman extends Component {
     ));
   }
 
+  resetGame() {
+    this.setState({ nWrong: 0, guessed: new Set(), answer: randomWord() });
+  }
+
   /** render: render game */
   render() {
     return (
       <div className="Hangman">
         <h1>Hangman</h1>
-        <img src={this.props.images[this.state.nWrong]} />
+        <img
+          src={this.props.images[this.state.nWrong]}
+          alt={`${this.state.nWrong}/${this.props.maxWrong} wrong`}
+        />
         <p className="Hangman-guess-count">Number Wrong: {this.state.nWrong}</p>
         <p className="Hangman-word">{this.guessedWord()}</p>
-        <p className="Hangman-btns">{this.generateButtons()}</p>
+        <AlphaButtons
+          guessed={this.state.guessed}
+          nWrong={this.state.nWrong}
+          maxWrong={this.props.maxWrong}
+          handleGuess={this.handleGuess}
+        />
+        <button className="Hangman-reset" onClick={this.resetGame}>
+          Reset
+        </button>
       </div>
     );
   }
